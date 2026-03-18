@@ -57,7 +57,7 @@ Phone: ${phoneNumber}
   `.trim();
 }
 
-async function sendWhatsAppMessage(phoneNumberId, accessToken, to, body) {
+async function sendWhatsAppMessage(phoneNumberId, accessToken, to, templateParams) {
   const url = `https://graph.facebook.com/${META_GRAPH_VERSION}/${phoneNumberId}/messages`;
   const res = await fetch(url, {
     method: 'POST',
@@ -67,10 +67,18 @@ async function sendWhatsAppMessage(phoneNumberId, accessToken, to, body) {
     },
     body: JSON.stringify({
       messaging_product: 'whatsapp',
-      recipient_type: 'individual',
       to: to.replace(/\D/g, ''),
-      type: 'text',
-      text: { preview_url: false, body },
+      type: 'template',
+      template: {
+        name: process.env.WHATSAPP_TEMPLATE_NAME,
+        language: { code: process.env.WHATSAPP_TEMPLATE_LANGUAGE || 'ar' },
+        components: [
+          {
+            type: 'body',
+            parameters: templateParams,
+          },
+        ],
+      },
     }),
   });
   if (!res.ok) {
@@ -109,13 +117,56 @@ export default async function handler(req, res) {
       });
     }
 
-    const messageBody = buildOrderMessage(body);
+    const routeText = route === 'irbid_to_amman' ? 'إربد → عمّان' : 'عمّان → إربد';
+    const d = new Date(date);
+    const dateStr = d.toLocaleDateString('ar-JO', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    const timeStr = d.toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' });
+
+    let serviceDesc = '';
+    switch (service.type) {
+      case 'basic':
+        serviceDesc = 'خدمة عادية - 5 دنانير';
+        break;
+      case 'private':
+        serviceDesc = `خدمة خاصة - 15 دينار (${service.alone ? 'شخص واحد' : 'عائلة'})`;
+        break;
+      case 'airport': {
+        const airportPrice = route === 'irbid_to_amman' ? 25 : 15;
+        serviceDesc = `خدمة المطار - ${airportPrice} دينار (${service.toAirport ? 'إلى المطار' : 'من المطار'})`;
+        break;
+      }
+      case 'instant':
+        serviceDesc = `طلب فوري: ${service.description}`;
+        break;
+      default:
+        serviceDesc = 'خدمة غير معروفة';
+    }
+
+    const pickupMapsUrl = `https://www.google.com/maps?q=${pickup.latitude},${pickup.longitude}`;
+    const destMapsUrl = `https://www.google.com/maps?q=${destination.latitude},${destination.longitude}`;
+
+    const templateParams = [
+      { type: 'text', text: routeText }, // {{1}} المسار
+      { type: 'text', text: `${dateStr} ${timeStr}` }, // {{2}} التاريخ/الوقت
+      { type: 'text', text: serviceDesc }, // {{3}} نوع الخدمة
+      { type: 'text', text: pickup.address }, // {{4}} عنوان الانطلاق
+      { type: 'text', text: pickupMapsUrl }, // {{5}} رابط خريطة الانطلاق
+      { type: 'text', text: destination.address }, // {{6}} عنوان الوجهة
+      { type: 'text', text: destMapsUrl }, // {{7}} رابط خريطة الوجهة
+      { type: 'text', text: fullName }, // {{8}} اسم العميل
+      { type: 'text', text: phoneNumber }, // {{9}} رقم الهاتف
+    ];
+
     const recipients = [recipient1];
     const recipient2 = process.env.WHATSAPP_RECIPIENT_PHONE_2;
     if (recipient2) recipients.push(recipient2);
 
     const results = await Promise.all(
-      recipients.map((to) => sendWhatsAppMessage(phoneNumberId, token, to, messageBody))
+      recipients.map((to) => sendWhatsAppMessage(phoneNumberId, token, to, templateParams))
     );
 
     return res.status(200).json({ success: true, messageIds: results.map((r) => r.messages?.[0]?.id).filter(Boolean) });
