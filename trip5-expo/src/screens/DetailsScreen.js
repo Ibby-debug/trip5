@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import i18n from '../i18n';
+import { colors } from '../theme';
 
 export default function DetailsScreen({ order, updateOrder, goNext, canProceed, isValidPhone }) {
   const [pickupManualText, setPickupManualText] = useState('');
@@ -110,7 +111,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
           placeholder={i18n.t('enter_address')}
           value={pickupManualText}
           onChangeText={setPickupManualText}
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.placeholder}
         />
         <View style={styles.locationRow}>
           <TouchableOpacity
@@ -119,7 +120,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
             disabled={geocodingPickup}
           >
             {geocodingPickup ? (
-              <ActivityIndicator size="small" color="#4CAF50" />
+              <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.setAddressText}>{i18n.t('set_address')}</Text>
             )}
@@ -130,7 +131,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
             disabled={loadingPickup}
           >
             {loadingPickup ? (
-              <ActivityIndicator size="small" color="#4CAF50" />
+              <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.useLocationBtnText}>{i18n.t('use_my_location')}</Text>
             )}
@@ -147,7 +148,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
           placeholder={i18n.t('enter_address')}
           value={destManualText}
           onChangeText={setDestManualText}
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.placeholder}
         />
         <View style={styles.locationRow}>
           <TouchableOpacity
@@ -156,7 +157,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
             disabled={geocodingDest}
           >
             {geocodingDest ? (
-              <ActivityIndicator size="small" color="#4CAF50" />
+              <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.setAddressText}>{i18n.t('set_address')}</Text>
             )}
@@ -167,7 +168,7 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
             disabled={loadingDest}
           >
             {loadingDest ? (
-              <ActivityIndicator size="small" color="#4CAF50" />
+              <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.useLocationBtnText}>{i18n.t('use_my_location')}</Text>
             )}
@@ -210,52 +211,53 @@ export default function DetailsScreen({ order, updateOrder, goNext, canProceed, 
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 24, paddingTop: 48, paddingBottom: 48 },
-  title: { fontSize: 22, fontWeight: '600', marginBottom: 24 },
-  label: { fontSize: 16, fontWeight: '600', marginBottom: 8 },
+  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, color: colors.text },
+  label: { fontSize: 16, fontWeight: '600', marginBottom: 8, color: colors.text },
   selectedAddress: {
     fontSize: 14,
-    color: '#555',
+    color: colors.textSecondary,
     marginBottom: 8,
     padding: 8,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.primaryLight,
     borderRadius: 6,
   },
   locationRow: { flexDirection: 'row', gap: 12, marginBottom: 16 },
   setAddressBtn: {
     flex: 1,
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
   },
-  setAddressText: { color: '#fff', fontWeight: '600', fontSize: 14 },
+  setAddressText: { color: colors.white, fontWeight: '600', fontSize: 14 },
   useLocationBtn: {
     flex: 1,
-    backgroundColor: '#E8F5E9',
+    backgroundColor: colors.primaryLight,
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
   },
-  useLocationBtnText: { color: '#4CAF50', fontWeight: '600', fontSize: 14 },
+  useLocationBtnText: { color: colors.primary, fontWeight: '600', fontSize: 14 },
   btnDisabled: { opacity: 0.6 },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: colors.border,
     borderRadius: 8,
     padding: 14,
     marginBottom: 16,
     fontSize: 16,
+    backgroundColor: colors.surface,
   },
-  error: { color: '#d32f2f', fontSize: 12, marginBottom: 12 },
+  error: { color: colors.error, fontSize: 12, marginBottom: 12 },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 16,
     borderRadius: 12,
     marginTop: 16,
     alignItems: 'center',
   },
-  buttonDisabled: { backgroundColor: '#ccc' },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
+  buttonDisabled: { backgroundColor: colors.disabled },
+  buttonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
 });

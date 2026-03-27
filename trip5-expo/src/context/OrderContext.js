@@ -37,21 +37,41 @@ export function OrderProvider({ children }) {
   };
 
   const updateOrder = useCallback((updates) => {
-    setOrder((prev) => ({ ...prev, ...updates }));
+    setOrder((prev) => {
+      const next = { ...prev, ...updates };
+      // When route changes (e.g. user goes back and picks Amman instead of Irbid), reset page 4 form
+      if ('route' in updates && updates.route !== prev.route) {
+        next.fullName = '';
+        next.phoneNumber = '';
+        next.pickup = null;
+        next.destination = null;
+      }
+      return next;
+    });
   }, []);
+
+  const isAirportRoute = ['airport_to_amman', 'airport_to_irbid', 'amman_to_airport', 'irbid_to_airport'].includes(order.route);
 
   const goNext = useCallback(() => {
-    setCurrentStep((s) => Math.min(s + 1, 5));
-  }, []);
+    setCurrentStep((s) => {
+      const next = s + 1;
+      if (s === 2 && isAirportRoute) return 4;
+      return Math.min(next, 5);
+    });
+  }, [order.route]);
 
   const goBack = useCallback(() => {
-    setCurrentStep((s) => Math.max(s - 1, 1));
-  }, []);
+    setCurrentStep((s) => {
+      if (s === 4 && isAirportRoute) return 2;
+      return Math.max(s - 1, 1);
+    });
+  }, [order.route]);
 
   const canProceedFromRoute = order.route !== null;
   const canProceedFromService =
-    order.service !== null &&
-    (order.service.type !== 'instant' || (order.service.description || '').trim());
+    isAirportRoute ||
+    (order.service !== null &&
+      (order.service.type !== 'instant' || (order.service.description || '').trim()));
   const canProceedFromDetails =
     order.fullName.trim() &&
     isValidPhone(order.phoneNumber) &&

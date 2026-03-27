@@ -2,6 +2,35 @@
 
 iOS app for booking rides between Irbid and Amman, Jordan.
 
+## GitHub & Cursor on Mac
+
+1. **Create a repository** on GitHub (e.g. `trip5`). Do **not** upload `.env` files; they stay local.
+2. **On this PC**, from the repo folder:
+   ```bash
+   git add -A
+   git commit -m "Sync Trip5 monorepo"
+   git remote set-url origin https://github.com/YOUR_USER/YOUR_REPO.git
+   git push -u origin main
+   ```
+   If you still use `BrightMindsTech/trip5-backend` and want the **full** app there, you can keep that remote URL—just know the repo name may say “backend” while it holds everything.
+3. **On your Mac**: install [Cursor](https://cursor.com), then **File → Open Folder** and clone:
+   ```bash
+   git clone https://github.com/YOUR_USER/YOUR_REPO.git
+   cd YOUR_REPO
+   ```
+4. **Env files** (copy examples, then fill in real keys—never commit `.env`):
+   ```bash
+   cp trip5-expo/.env.example trip5-expo/.env
+   cp backend/.env.example backend/.env
+   ```
+5. **Expo app**:
+   ```bash
+   cd trip5-expo && npm install && npm start
+   ```
+6. **Backend** (local): `cd backend && npm install && npm start` — or deploy and set `EXPO_PUBLIC_API_BASE_URL` in `trip5-expo/.env`.
+
+---
+
 ## Two Projects
 
 | Project | Purpose |

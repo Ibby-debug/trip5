@@ -16,6 +16,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import * as Location from 'expo-location';
 import i18n from '../i18n';
 import { Config } from '../config';
+import { colors } from '../theme';
 
 const JORDAN_CENTER = { latitude: 32.5565, longitude: 35.8467 };
 const MAP_DELTA = { latitudeDelta: 0.5, longitudeDelta: 0.5 };
@@ -202,7 +203,7 @@ export default function MapLocationPicker({ visible, title, onSelect, onClose, i
                 listView: styles.placesList,
               }}
               textInputProps={{
-                placeholderTextColor: '#999',
+                placeholderTextColor: colors.placeholder,
               }}
               enablePoweredByContainer={false}
             />
@@ -288,7 +289,7 @@ export default function MapLocationPicker({ visible, title, onSelect, onClose, i
             disabled={loadingLocation}
           >
             {loadingLocation ? (
-              <ActivityIndicator size="small" color="#4CAF50" />
+              <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.useLocationText}>{i18n.t('use_my_location')}</Text>
             )}
@@ -313,7 +314,7 @@ export default function MapLocationPicker({ visible, title, onSelect, onClose, i
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: colors.background },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -321,22 +322,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: colors.border,
   },
-  title: { fontSize: 18, fontWeight: '600', flex: 1, marginRight: 8 },
+  title: { fontSize: 18, fontWeight: '600', flex: 1, marginRight: 8, color: colors.text },
   closeBtnTouch: { padding: 8 },
-  closeBtn: { fontSize: 28, color: '#666', lineHeight: 32 },
+  closeBtn: { fontSize: 28, color: colors.textSecondary, lineHeight: 32 },
   searchContainer: { paddingHorizontal: 12, paddingTop: 8 },
   placesContainer: { flex: 0 },
   placesInput: {
     height: 48,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.surface,
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
+    color: colors.text,
   },
   placesList: { maxHeight: 150 },
-  noKeyHint: { fontSize: 12, color: '#999', padding: 8 },
+  noKeyHint: { fontSize: 12, color: colors.placeholder, padding: 8 },
   mapContainer: { flex: 1, minHeight: 280, position: 'relative' },
   map: { width: '100%', height: '100%' },
   mapTypeBar: {
@@ -352,9 +354,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 6,
   },
-  mapTypeBtnActive: { backgroundColor: '#4CAF50' },
-  mapTypeText: { fontSize: 12, color: '#333' },
-  mapTypeTextActive: { color: '#fff', fontWeight: '600' },
+  mapTypeBtnActive: { backgroundColor: colors.primary },
+  mapTypeText: { fontSize: 12, color: colors.text },
+  mapTypeTextActive: { color: colors.white, fontWeight: '600' },
   zoomBar: {
     position: 'absolute',
     bottom: 12,
@@ -370,21 +372,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 4,
   },
-  zoomBtnText: { fontSize: 24, color: '#333', fontWeight: '300', lineHeight: 28 },
+  zoomBtnText: { fontSize: 24, color: colors.text, fontWeight: '300', lineHeight: 28 },
   selectedAddress: {
     padding: 12,
     fontSize: 14,
-    color: '#333',
-    backgroundColor: '#f9f9f9',
+    color: colors.text,
+    backgroundColor: colors.surface,
   },
-  hint: { padding: 8, color: '#666', fontSize: 13, textAlign: 'center' },
+  hint: { padding: 8, color: colors.textSecondary, fontSize: 13, textAlign: 'center' },
   actions: { padding: 16, gap: 12 },
   actionBtn: { padding: 16, borderRadius: 12, alignItems: 'center' },
-  useLocationBtn: { backgroundColor: '#E8F5E9' },
-  useLocationText: { color: '#4CAF50', fontWeight: '600', fontSize: 16 },
-  confirmBtn: { backgroundColor: '#4CAF50' },
-  confirmBtnText: { color: '#fff', fontWeight: '600', fontSize: 16 },
-  cancelBtn: { backgroundColor: '#f0f0f0' },
-  cancelBtnText: { color: '#666', fontWeight: '600', fontSize: 16 },
+  useLocationBtn: { backgroundColor: colors.primaryLight },
+  useLocationText: { color: colors.primary, fontWeight: '600', fontSize: 16 },
+  confirmBtn: { backgroundColor: colors.primary },
+  confirmBtnText: { color: colors.white, fontWeight: '600', fontSize: 16 },
+  cancelBtn: { backgroundColor: colors.surface },
+  cancelBtnText: { color: colors.textSecondary, fontWeight: '600', fontSize: 16 },
   btnDisabled: { opacity: 0.6 },
 });

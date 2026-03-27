@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
 import i18n from '../i18n';
+import { colors } from '../theme';
 
 export default function ServiceScreen({ order, updateOrder, goNext, canProceed }) {
   const [showPrivate, setShowPrivate] = useState(false);
@@ -151,11 +152,13 @@ export default function ServiceScreen({ order, updateOrder, goNext, canProceed }
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 24, paddingTop: 48, paddingBottom: 48 },
-  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, textAlign: 'center' },
+  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, textAlign: 'center', color: colors.text },
   card: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
     padding: 20,
     borderRadius: 12,
     marginBottom: 16,
@@ -163,40 +166,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  cardSelected: { backgroundColor: '#4CAF50' },
-  cardTitle: { fontSize: 18, fontWeight: '600' },
-  cardTitleSelected: { color: '#fff' },
-  cardSubtitle: { fontSize: 14, color: '#666', marginTop: 4 },
-  cardSubtitleSelected: { color: 'rgba(255,255,255,0.9)' },
-  price: { fontSize: 18, fontWeight: '600', color: '#4CAF50' },
-  priceSelected: { color: '#fff' },
-  check: { color: '#fff', fontSize: 20 },
+  cardSelected: { backgroundColor: colors.primaryLight, borderColor: colors.primary, borderWidth: 1 },
+  cardTitle: { fontSize: 18, fontWeight: '600', color: colors.text },
+  cardTitleSelected: { color: colors.text },
+  cardSubtitle: { fontSize: 14, color: colors.textSecondary, marginTop: 4 },
+  cardSubtitleSelected: { color: colors.textSecondary },
+  price: { fontSize: 18, fontWeight: '600', color: colors.primary },
+  priceSelected: { color: colors.primary },
+  check: { color: colors.primary, fontSize: 20 },
   subOptions: { flexDirection: 'row', gap: 12, marginBottom: 16, marginLeft: 8 },
   subBtn: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.border,
     borderRadius: 8,
   },
-  subBtnSelected: { backgroundColor: '#4CAF50' },
-  subBtnText: {},
-  subBtnTextSelected: { color: '#fff', fontWeight: '600' },
+  subBtnSelected: { backgroundColor: colors.primary },
+  subBtnText: { color: colors.text },
+  subBtnTextSelected: { color: colors.white, fontWeight: '600' },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: colors.border,
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     minHeight: 80,
     textAlignVertical: 'top',
+    backgroundColor: colors.surface,
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 16,
     borderRadius: 12,
     marginTop: 16,
     alignItems: 'center',
   },
-  buttonDisabled: { backgroundColor: '#ccc' },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
+  buttonDisabled: { backgroundColor: colors.disabled },
+  buttonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
 });

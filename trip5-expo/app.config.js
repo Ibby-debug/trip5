@@ -16,12 +16,12 @@ export default {
     slug: "trip5-expo",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./assets/trip5-logo.png",
     userInterfaceStyle: "light",
     splash: {
-      image: "./assets/splash-icon.png",
+      image: "./assets/trip5-logo.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#1A0A2E",
     },
     ios: {
       supportsTablet: true,
@@ -37,10 +37,8 @@ export default {
     android: {
       package: "com.trip5.app",
       adaptiveIcon: {
-        backgroundColor: "#E6F4FE",
-        foregroundImage: "./assets/android-icon-foreground.png",
-        backgroundImage: "./assets/android-icon-background.png",
-        monochromeImage: "./assets/android-icon-monochrome.png",
+        backgroundColor: "#1A0A2E",
+        foregroundImage: "./assets/trip5-logo.png",
       },
       config: {
         googleMaps: {

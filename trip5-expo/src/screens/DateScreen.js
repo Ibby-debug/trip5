@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import i18n from '../i18n';
+import { colors } from '../theme';
 
 export default function DateScreen({ order, updateOrder, goNext }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -215,11 +216,13 @@ export default function DateScreen({ order, updateOrder, goNext }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 24, paddingTop: 48, paddingBottom: 48 },
-  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, textAlign: 'center' },
+  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, textAlign: 'center', color: colors.text },
   card: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
     padding: 20,
     borderRadius: 12,
     marginBottom: 16,
@@ -227,33 +230,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  cardSelected: { backgroundColor: '#4CAF50' },
-  cardTitle: { fontSize: 18, fontWeight: '500' },
-  cardTitleSelected: { color: '#fff' },
-  check: { color: '#fff', fontSize: 20 },
+  cardSelected: { backgroundColor: colors.primaryLight, borderColor: colors.primary, borderWidth: 1 },
+  cardTitle: { fontSize: 18, fontWeight: '500', color: colors.text },
+  cardTitleSelected: { color: colors.text },
+  check: { color: colors.primary, fontSize: 20 },
   pickerButton: {
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
     borderRadius: 8,
     marginBottom: 16,
   },
-  pickerLabel: { fontSize: 14, color: '#666', marginBottom: 4 },
-  pickerValue: { fontSize: 16, fontWeight: '500' },
+  pickerLabel: { fontSize: 14, color: colors.textSecondary, marginBottom: 4 },
+  pickerValue: { fontSize: 16, fontWeight: '500', color: colors.text },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 16,
     borderRadius: 12,
     marginTop: 8,
     alignItems: 'center',
   },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
+  buttonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
   pickerModalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   pickerModalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingBottom: 32,
@@ -264,15 +269,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: colors.border,
   },
   pickerModalCancel: {
     fontSize: 17,
-    color: '#666',
+    color: colors.textSecondary,
   },
   pickerModalDone: {
     fontSize: 17,
-    color: '#4CAF50',
+    color: colors.primary,
     fontWeight: '600',
   },
 });

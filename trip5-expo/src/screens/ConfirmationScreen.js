@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import i18n from '../i18n';
+import { colors } from '../theme';
 
 export default function ConfirmationScreen({
   order,
@@ -76,7 +77,7 @@ export default function ConfirmationScreen({
         disabled={isSubmitting}
       >
         {isSubmitting ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.white} />
         ) : (
           <Text style={styles.buttonText}>{i18n.t('submit_order')}</Text>
         )}
@@ -95,33 +96,35 @@ function SummaryRow({ label, value }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 24, paddingTop: 48, paddingBottom: 48 },
-  title: { fontSize: 22, fontWeight: '600', marginBottom: 24 },
+  title: { fontSize: 22, fontWeight: '600', marginBottom: 24, color: colors.text },
   row: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.primaryLight,
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  rowLabel: { fontSize: 12, color: '#666', marginBottom: 4 },
-  rowValue: { fontSize: 16 },
-  errorBox: { backgroundColor: '#ffebee', padding: 12, borderRadius: 8, marginBottom: 16 },
-  error: { color: '#d32f2f', fontSize: 14 },
+  rowLabel: { fontSize: 12, color: colors.textSecondary, marginBottom: 4 },
+  rowValue: { fontSize: 16, color: colors.text },
+  errorBox: { backgroundColor: colors.errorBg, padding: 12, borderRadius: 8, marginBottom: 16 },
+  error: { color: colors.error, fontSize: 14 },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 16,
     borderRadius: 12,
     marginTop: 16,
     alignItems: 'center',
   },
   buttonDisabled: { opacity: 0.7 },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
-  successIcon: { fontSize: 64, color: '#4CAF50', textAlign: 'center', marginTop: 80 },
-  successTitle: { fontSize: 24, fontWeight: '600', textAlign: 'center', marginTop: 24 },
+  buttonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
+  successIcon: { fontSize: 64, color: colors.primary, textAlign: 'center', marginTop: 80 },
+  successTitle: { fontSize: 24, fontWeight: '600', textAlign: 'center', marginTop: 24, color: colors.text },
   successDesc: {
     fontSize: 16,
-    color: '#666',
+    color: colors.textSecondary,
     textAlign: 'center',
     marginTop: 12,
     paddingHorizontal: 24,

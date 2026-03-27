@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
 import i18n, { setLanguage } from '../i18n';
+import { colors, ios } from '../theme';
 
 export default function LanguageToggle({ onToggle }) {
   const isArabic = i18n.locale === 'ar';
@@ -10,13 +11,29 @@ export default function LanguageToggle({ onToggle }) {
     onToggle?.();
   };
   return (
-    <TouchableOpacity onPress={toggle} style={styles.btn}>
+    <Pressable
+      onPress={toggle}
+      style={({ pressed }) => [styles.btn, pressed && styles.btnPressed]}
+      hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+    >
       <Text style={styles.text}>{isArabic ? 'English' : 'العربية'}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  btn: { paddingHorizontal: 12, paddingVertical: 6 },
-  text: { color: '#4CAF50', fontWeight: '600', fontSize: 14 },
+  btn: {
+    paddingHorizontal: ios.spacing.md,
+    paddingVertical: ios.spacing.sm,
+    backgroundColor: colors.surface,
+    borderRadius: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+  },
+  btnPressed: { opacity: 0.7 },
+  text: {
+    color: colors.primary,
+    fontWeight: ios.fontWeight.semibold,
+    fontSize: ios.fontSize.footnote,
+  },
 });
