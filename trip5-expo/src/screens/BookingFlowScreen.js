@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import i18n, { initI18n } from '../i18n';
 import { colors, ios } from '../theme';
 import { useAuth } from '../context/AuthContext';
@@ -15,6 +15,9 @@ import WalletModal from '../components/WalletModal';
 import UnifiedFlowScreen from './UnifiedFlowScreen';
 
 export default function BookingFlowScreen({ navigation }) {
+  const route = useRoute();
+  const appliedHomeParams = useRef(false);
+  const appliedInitialPickup = useRef(false);
   const { signOut } = useAuth();
   const {
     order,
@@ -33,10 +36,12 @@ export default function BookingFlowScreen({ navigation }) {
     orderSent,
     submit,
     resetOrder,
+    setCurrentStep,
   } = useOrder();
 
   const [locale, setLocale] = useState(i18n.locale);
   const [walletVisible, setWalletVisible] = useState(false);
+  const [initialOpenAirportModal, setInitialOpenAirportModal] = useState(false);
 
   useEffect(() => {
     initI18n()
@@ -44,9 +49,44 @@ export default function BookingFlowScreen({ navigation }) {
       .catch(() => setLocale('ar'));
   }, []);
 
+  useEffect(() => {
+    if (appliedHomeParams.current) return;
+    const preset = route.params?.presetRoute;
+    const openAir = route.params?.openAirportModal;
+    if (preset == null && !openAir) return;
+    appliedHomeParams.current = true;
+    if (preset != null) {
+      updateOrder({ route: preset, service: null });
+      // Same as wizard step 1: after choosing Irbid or Amman route, continue to the map (step 2).
+      if (preset === 'amman_to_irbid' || preset === 'irbid_to_amman') {
+        setCurrentStep(2);
+      }
+    }
+    if (openAir) {
+      setInitialOpenAirportModal(true);
+    }
+  }, [route.params, updateOrder, setCurrentStep]);
+
+  useEffect(() => {
+    if (currentStep !== 2) return;
+    const p = route.params?.initialPickup;
+    if (!p || typeof p.latitude !== 'number' || typeof p.longitude !== 'number') return;
+    if (appliedInitialPickup.current) return;
+    updateOrder({
+      pickup: {
+        latitude: p.latitude,
+        longitude: p.longitude,
+        address: p.address || '',
+      },
+    });
+    appliedInitialPickup.current = true;
+  }, [currentStep, route.params?.initialPickup, updateOrder]);
+
   useFocusEffect(
     useCallback(() => {
       return () => {
+        appliedHomeParams.current = false;
+        appliedInitialPickup.current = false;
         resetOrder();
       };
     }, [resetOrder])
@@ -163,6 +203,7 @@ export default function BookingFlowScreen({ navigation }) {
       resetOrder={resetOrder}
       onExitAfterSuccess={() => navigation.goBack()}
       exitAfterSuccessLabel={i18n.t('dashboard_back_home')}
+      initialOpenAirportModal={initialOpenAirportModal}
     />
   );
 

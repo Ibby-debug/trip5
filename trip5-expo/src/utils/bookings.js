@@ -1,8 +1,42 @@
+import i18n from '../i18n';
+
 /**
- * Order status: new inserts use "pending". Ops may set completed/cancelled/confirmed later.
- * Terminal statuses are excluded from the "active" upcoming card.
+ * Order status (string stored on orders.status):
+ * pending, confirmed, driver_en_route, in_route — non-terminal (shown on active card when upcoming).
+ * completed, cancelled — terminal (excluded from active upcoming card).
  */
 export const TERMINAL_STATUSES = new Set(['completed', 'cancelled']);
+
+export function getRouteLabel(route) {
+  if (!route) return '';
+  const r = route;
+  if (i18n.locale === 'ar') {
+    if (r === 'irbid_to_amman') return i18n.t('from_irbid_to_amman');
+    if (r === 'amman_to_irbid') return i18n.t('from_amman_to_irbid');
+    if (r === 'airport_to_amman') return i18n.t('route_airport_to_amman');
+    if (r === 'airport_to_irbid') return i18n.t('route_airport_to_irbid');
+    if (r === 'amman_to_airport') return i18n.t('route_amman_to_airport');
+    if (r === 'irbid_to_airport') return i18n.t('route_irbid_to_airport');
+  } else {
+    if (r === 'irbid_to_amman') return i18n.t('route_irbid_to_amman');
+    if (r === 'amman_to_irbid') return i18n.t('route_amman_to_irbid');
+    if (r === 'airport_to_amman') return i18n.t('route_airport_to_amman');
+    if (r === 'airport_to_irbid') return i18n.t('route_airport_to_irbid');
+    if (r === 'amman_to_airport') return i18n.t('route_amman_to_airport');
+    if (r === 'irbid_to_airport') return i18n.t('route_irbid_to_airport');
+  }
+  return r;
+}
+
+export function statusLabel(status) {
+  const s = String(status || '').toLowerCase();
+  if (s === 'completed') return i18n.t('order_status_completed');
+  if (s === 'cancelled') return i18n.t('order_status_cancelled');
+  if (s === 'confirmed') return i18n.t('order_status_confirmed');
+  if (s === 'driver_en_route') return i18n.t('order_status_driver_en_route');
+  if (s === 'in_route') return i18n.t('order_status_in_route');
+  return i18n.t('order_status_pending');
+}
 
 export function isTerminalStatus(status) {
   return TERMINAL_STATUSES.has(String(status || '').toLowerCase());

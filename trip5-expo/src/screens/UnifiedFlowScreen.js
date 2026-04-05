@@ -52,6 +52,7 @@ export default function UnifiedFlowScreen({
   resetOrder,
   onExitAfterSuccess,
   exitAfterSuccessLabel,
+  initialOpenAirportModal = false,
 }) {
   const isArabic = i18n.locale === 'ar';
   const { profile } = useAuth();
@@ -151,6 +152,15 @@ export default function UnifiedFlowScreen({
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [airportFlowStep, setAirportFlowStep] = useState(null);
   const [showAirportModal, setShowAirportModal] = useState(false);
+  const airportModalFromHomeRef = useRef(false);
+
+  useEffect(() => {
+    if (!initialOpenAirportModal || airportModalFromHomeRef.current) return;
+    if (currentStep !== 1) return;
+    airportModalFromHomeRef.current = true;
+    setAirportFlowStep('from_to');
+    setShowAirportModal(true);
+  }, [initialOpenAirportModal, currentStep]);
 
   const now = new Date();
   const minDate = new Date(now);
